@@ -43,42 +43,40 @@ average_energy <- mean(Beatles_Albums$energy, na.rm = TRUE)
 # Visualize Data ----------------------------------------------------------
 
 #Title and Subtitle Text
-Title <- "Using Spotify's API To Track The Energy of the Beatles"
-Subtitle <- "Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks
-feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale. Perceptual 
+Title <- "Using Machine Learning To Track The Energy of the Beatles"
+Subtitle <- "Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic 
+tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low. Perceptual 
 features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy."
-Caption <- "Data from Spotify. Chart by Sean Gardner (https://seanmgard.github.io/)"
+Caption <- "Data from Spotify. Chart by Sean Gardner (seanmgard.github.io)"
 
 min_x <- min(Beatles_Albums$energy)
 
-ggplot(Beatles_Albums, aes(x=energy, y = factor(album, level=c("Let It Be", "Abbey Road", "Yellow Submarine", "White Album",
+Beatles_Plot <- ggplot(Beatles_Albums, aes(x=energy, y = factor(album, level=c("Let It Be", "Abbey Road", "Yellow Submarine", "White Album",
                                                          "Magical Mystery Tour", "Sgt. Peppers", "Revolver", "Rubber Soul",
                                                          "Help!", "Beatles For Sale", "Hard Day's Night",
                                                          "With The Beatles", "Please Please Me")))) + 
-  geom_point(aes(color = album), size = 3, alpha = 0.55) +
-  geom_image(data = Beatles_Albums, mapping = aes(x=-0.01, y = album, image=URL), size = 0.06) +
+  geom_point(aes(color = album), size = 1.5, alpha = 0.55) +
+  geom_image(data = Beatles_Albums, mapping = aes(x=-0.01, y = album, image=URL), size = 0.08) +
   labs(x = "Energy Score", title = Title, subtitle = Subtitle, caption = Caption) +
   geom_vline(xintercept = average_energy, linetype = "dashed", color = "white") +
-  annotate("text", x = average_energy + 0.31, y = length(levels(factor(Beatles_Albums$album))) /2, label = "Average Energy Per Song", color = "white") +
-  geom_curve(aes(x = average_energy + 0.2, y = length(levels(factor(Beatles_Albums$album))) /2, xend = average_energy, yend = length(levels(factor(Beatles_Albums$album)))/2), color = "white", curvature = -0.3, size = 0.3, arrow = arrow(type = "closed", length = unit(0.15, "inches"))) +
+  annotate("text", x = average_energy + 0.33, y = length(levels(factor(Beatles_Albums$album))) /2, label = "Average Energy Per Song", color = "white", size = 8, family = "lato") +
+  geom_curve(aes(x = average_energy + 0.2, y = length(levels(factor(Beatles_Albums$album))) /2, xend = average_energy, yend = length(levels(factor(Beatles_Albums$album)))/2), color = "white", curvature = -0.3, size = 0.05, arrow = arrow(type = "closed", length = unit(0.06, "inches"))) +
   theme_void() +
   theme(
     plot.title.position   = "plot",
     plot.caption.position = "plot",
     legend.position = 'none',
     axis.title = element_blank(),
-    axis.text = element_text(size = 12, colour = "white", family = "lato", hjust = 0),
+    axis.text = element_text(size = 20, colour = "white", family = "lato", hjust = 0),
     axis.text.y = element_blank(),
-    text = element_text(size = 12, lineheight = 1.4, colour = "white", family = "lato"),
+    text = element_text(size = 24, lineheight = 0.3, colour = "white", family = "lato"),
     plot.background = element_rect(fill = '#1E212B'),
     panel.background = element_blank(), 
     panel.grid=element_blank(),
-    plot.title = element_text(color="white", face="bold", family = "lato", size=28, margin=margin(t=10)),
-    plot.subtitle = element_text(color= "white", size=13, family = "lato", margin=margin(t = 5, b = 20)),
-    plot.caption = element_markdown(colour = "grey", hjust = 0, family = "lato", margin = margin(t = 20)),
-    plot.margin = margin(b = 50, t = 20, r = 100, l = 100))
+    plot.title = element_text(color="white", face="bold", family = "lato", size=48, margin=margin(t=10)),
+    plot.subtitle = element_text(color= "white", size=24, family = "lato", margin=margin(t = 5, b = 20)),
+    plot.caption = element_markdown(colour = "white", hjust = 0, family = "lato", margin = margin(t = 20)),
+    plot.margin = margin(b = 20, t = 5, r = 20, l = 20))
 
-## Need to change dimensions of all images to 1000x1000 to get them to fit properly.
-
-ggsave(filename="iphone_plot.png", height=7, width=7,   bg = "white")
+ggsave(filename="Projects/Beatles Emotional Score/Beatles_Plot.png", height=7, width=6.2,   bg = "white")
 
